@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Entry and GPA Calculation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #b505f6, #e52e71);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0px 20px ;
+        }
+        
+        .grid-container {
+            display: grid;
+            width: 50%;
+            padding: 0 50px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+            border: 2px dotted;
+            box-shadow: 0px 0px 6px 2px #fafbfb;
+            background-color: rgb(197, 16, 248);
+            border-radius: 10px;
+        }
+        .grid-item {
+            padding: 10px;
+        }
+        .grid-item label {
+            display: block;
+        }
+        .grid-item input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .grid-item button {
+            grid-column: span 2;
+            padding: 10px;
+            background-color: #2a024b;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .grid-item button:hover {
+            background-color: #5111d0;
+        }
+        .result-table {
+            display: none;
+            width: 50%;
+            border: 2px dotted;
+            box-shadow: 0px 0px 6px 2px #fafbfb;
+            padding: 20px 50px;
+            background-color: rgb(197, 16, 248);
+            border-radius: 10px;
+        }
+        .result-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+           
+        }
+        .result-table th, .result-table td {
+            border: 1px solid #f2d664;
+            padding: 8px;
+            text-align: center;
+        }
+        .result-table td
+        {
+            color: white;
+        }
+        .result-table th {
+            background-color: #ffffff;
+            /* color: white; */
+        }
+        .result-table button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .result-table button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+    
+</head>
+<body>
+    <h1 style="color: white;" >Calculate Yur GPA =></h1>
+    <div class="grid-container" id="marks-grid">
+        <div class="grid-item">
+            <h2 style="color: white;">Subjects</h2>
+        </div>
+        <div class="grid-item">
+            <h2 style="color: white;">Marks</h2>
+        </div>
+        <div class="grid-item">
+            <label for="subject1" >Software Engineering</label>
+        </div>
+        <div class="grid-item">
+            <input type="number" id="subject1" min="0" max="100">
+        </div>
+        <div class="grid-item">
+            <label for="subject2">Big Data</label>
+        </div>
+        <div class="grid-item">
+            <input type="number" id="subject2" min="0" max="100">
+        </div>
+        <div class="grid-item">
+            <label for="subject3">Machine Learning</label>
+        </div>
+        <div class="grid-item">
+            <input type="number" id="subject3" min="0" max="100">
+        </div>
+        <div class="grid-item">
+            <label for="subject4">Data Structure</label>
+        </div>
+        <div class="grid-item">
+            <input type="number" id="subject4" min="0" max="100">
+        </div>
+        <div class="grid-item">
+            <button onclick="calculateGPA()">Submit</button>
+        </div>
+    </div>
+
+    <div class="result-table" id="result-table">
+        <h2>Marks and GPA</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Software Engineering</td>
+                    <td id="marks1"></td>
+                </tr>
+                <tr>
+                    <td>Big Data</td>
+                    <td id="marks2"></td>
+                </tr>
+                <tr>
+                    <td>Machine Learning</td>
+                    <td id="marks3"></td>
+                </tr>
+                <tr>
+                    <td>Data Structure</td>
+                    <td id="marks4"></td>
+                </tr>
+                <tr>
+                    <th>GPA</th>
+                    <th id="gpa"></th>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+         function calculateGPA() {
+            var subject1 = document.getElementById("subject1").value;
+            var subject2 = document.getElementById("subject2").value;
+            var subject3 = document.getElementById("subject3").value;
+            var subject4 = document.getElementById("subject4").value;
+
+            var marks = [subject1, subject2, subject3, subject4].map(Number);
+            var creditPoints = [3, 3, 3, 3]; // Example credit points for each subject
+
+            function percentageToGPAScale10(percentage) {
+                return (percentage / 10).toFixed(2);
+            }
+
+            var totalGradePoints = 0;
+            var totalCreditPoints = 0;
+
+            for (var i = 0; i < marks.length; i++) {
+                var gradePoint = percentageToGPAScale10(marks[i]);
+                totalGradePoints += gradePoint * creditPoints[i];
+                totalCreditPoints += creditPoints[i];
+            }
+
+            var gpa = (totalGradePoints / totalCreditPoints).toFixed(2);
+
+            document.getElementById("marks1").textContent = subject1;
+            document.getElementById("marks2").textContent = subject2;
+            document.getElementById("marks3").textContent = subject3;
+            document.getElementById("marks4").textContent = subject4;
+            document.getElementById("gpa").textContent = gpa;
+
+            document.getElementById("marks-grid").style.display = "none";
+            document.getElementById("result-table").style.display = "block";
+        }
+
+        function goBack() {
+            document.getElementById("marks-grid").style.display = "grid";
+            document.getElementById("result-table").style.display = "none";
+        }    </script>
+</body>
+</html>
+
